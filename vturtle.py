@@ -456,12 +456,12 @@ def table(center=(0,0), length=200, width=200):
     dx = vector(length / 2.0, 0, 0)
     dy = vector(0, width / 2.0, 0)
     box(pos=(c.x, c.y, -1.1), length=length, height=width, width=2,
-        color=color.gray(0.25), material=materials.wood)
+        color=color.gray(0.25), material=materials.emissive)
     walls = []
-    walls.append(Wall(c - dx + dy, c + dx + dy, material=materials.wood))
-    walls.append(Wall(c - dx - dy, c + dx - dy, material=materials.wood))
-    walls.append(Wall(c + dx - dy, c + dx + dy, material=materials.wood))
-    walls.append(Wall(c - dx - dy, c - dx + dy, material=materials.wood))
+    walls.append(Wall(c - dx + dy, c + dx + dy, material=materials.rough))
+    walls.append(Wall(c - dx - dy, c + dx - dy, material=materials.rough))
+    walls.append(Wall(c + dx - dy, c + dx + dy, material=materials.rough))
+    walls.append(Wall(c - dx - dy, c - dx + dy, material=materials.rough))
     return walls
 
 def maze(pos=(0,0), rows=8, columns=8, cell_size=30):
