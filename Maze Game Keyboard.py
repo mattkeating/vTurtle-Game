@@ -1,6 +1,9 @@
-# -*- coding: utf-8 -*-
 from visual import *
+from visual.controls import *
+win = controls(title='Play Again?',x=60, y=90, width=300, height=300, range=50)
 def main():
+    win.visible = False
+    import sys
     import vturtle
     import random
     import vturtle_camera
@@ -8,34 +11,31 @@ def main():
     import time
     robot = vturtle.Robot(obstacles=vturtle.maze())
     robot.pen_up()
+    center = vturtle_camera.fps_pov(robot,scene)
     robot.speed(50)
     loc = random.randint(1,3)
     if loc == 1:
         ## Upper Right
-        circle = sphere(pos=(210,210,1), radius=5, color=color.red)
+        circle = sphere(pos=(210,210,5), radius=5, color=color.red)
     if loc == 2:
         ## Upper Left
-        circle = sphere(pos=(0,215,1), radius=5, color=color.red)
+        circle = sphere(pos=(0,215,5), radius=5, color=color.red)
     if loc == 3:
         ## Bottom Right
-        circle = sphere(pos=(210,0,1), radius=5, color=color.red)
+        circle = sphere(pos=(210,0,5), radius=5, color=color.red)
 
-    time.sleep(.5)
     vturtle_camera.fps_pov(robot, scene)
     time = 0
-    robot.hide() 
     fpv = True
-    Cicle = None
-    
+
     while True:
         rate(100)
-        
         if scene.kb.keys:
             s = scene.kb.getkey()
             robx = int(robot._frame.x)
             roby = int(robot._frame.y)
             if robx in range(int(circle.pos.x-10),int(circle.pos.x + 10)) and roby in range(int(circle.pos.y-10),int(circle.pos.y + 10)):
-                gameOver()
+                 break
             if s == 'down':
                 robot.backward(10)
                 if fpv == True:    
@@ -52,16 +52,35 @@ def main():
                 robot.left(10)
                 if fpv == True:
                     vturtle_camera.fps_pov(robot, scene)
-          
-
-
-def gameOver():
-    import vturtle
+    gameOver(robot,scene,center)
+    
+def gameOver(robot,scene,center):
+    
     import vturtle_camera
-    robot = vturtle.Robot(obstacles=vturtle.maze())
-    text(text='GAME OVER',pos=(robot._frame.x+10, robot._frame.y+10, 1), depth=-0.3, color=color.green)
-
+    import time
+    vturtle_camera.top_pov(robot,scene,center)
+    y = 175
+    c = 1
+    while y > 0:
+        if c == 1:
+            text(text='YOU WON!', pos=(30,y,50),color=color.green,height=20)
+        if c == 2:
+            text(text='YOU WON!', pos=(30,y,50),color=color.cyan,height=20)
+        if c == 3:
+            text(text='YOU WON!', pos=(30,y,50),color=color.red,height=20)
+        if c == 4:
+            text(text='YOU WON!', pos=(30,y,50),color=color.yellow,height=20)
+        if c == 5:
+            text(text='YOU WON!', pos=(30,y,50),color=color.magenta,height=20)
+        if c == 6:
+            text(text='YOU WON!', pos=(30,y,50),color=color.orange,height=20)
+        y = y - 30
+        time.sleep(.05)
+        c = c + 1
+    
+    win.visible = True
+    newgame = button(pos=(0,0), width=60, height=60, text='Play Again?', action=lambda: main())
+    
 
 main()
-
 
